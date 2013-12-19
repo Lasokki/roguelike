@@ -108,6 +108,21 @@ class Basic(State):
         self.log_window.addstr(1, 30, str(start_x))
         self.log_window.addstr(2, 30, str(start_y))
 
+        # Cache visible npcs
+        
+        """
+        Pseudocode:
+        npcs = dungeon.get_npcs()
+        
+        for npc in npcs.itervalues():
+        if npc.get_x() && npc.get_y() are within start_x to start_x+something and same for y:
+           add npc to visible_npcs
+
+        """
+
+        # Cache visible items
+        # Same here
+
         while (y < 16):
             field_x = start_x
             while (x < 78):

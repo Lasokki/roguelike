@@ -71,24 +71,6 @@ class Basic(State):
         self.map_window.noutrefresh()
         self.stat_window.noutrefresh()
 
-    # REFACTOR THIS CRAP RIGHT AWAY
-    def draw_field_old(self, screen, field):
-
-        x = 0
-        y = 0
-            
-        while(y < len(field)):
-            while(x < len(field[y])):
-                tile = field[y][x]
-                if tile.terrain == "wall":
-                    screen.addch(y, x, '#')
-                elif tile.terrain == "floor":
-                    screen.addch(y, x, '.')
-                
-                x = x + 1
-            x = 0
-            y = y + 1
-
     """
     Prints 79x17 tiles of a given field, centered on player.
     """
@@ -264,11 +246,9 @@ class Basic(State):
         
         Actions could return a string to log? log = log + " " + action(derp)
 
-        NOTE DEBUG: argument screen
-
     """
 
-    # Arguments: command, actor, dungeon, screen (debug)
+    # Arguments: command, actor, dungeon
     def execute_action(self, cmd, actor, dungeon):
         
         # Erase old stuff from log_window

@@ -52,21 +52,12 @@ class Basic(State):
     """
 
     # Basic draw function
-    # Still can't figure out why the screen is black before input
     def draw(self):
-        
-        #DEBUG
-        #self.screen.addstr(28, 0, "         turn: " + str(turn) + "        ")
-        
+                
         self.draw_field(self.map_window, self.field)
         #self.draw_items(self.map_window, self.dungeon)
         #self.draw_npcs(self.map_window, self.dungeon)
-        """
-        self.log_window.noutrefresh()
-        self.map_window.noutrefresh()
-        self.stat_window.noutrefresh()
-        curses.doupdate()
-        """
+ 
         self.log_window.noutrefresh()
         self.map_window.noutrefresh()
         self.stat_window.noutrefresh()
@@ -101,15 +92,15 @@ class Basic(State):
 
         if center_y-8 < 0:
             start_y = 0
-            self.log_window.addstr(0,10, "y_0")
+            self.log_window.addstr(0,11, "y_0")
 
         elif center_y+8 < len(field):
             start_y = center_y - 8
-            self.log_window.addstr(0,10, "y_center")
+            self.log_window.addstr(0,11, "y_center")
 
         else:
             start_y = len(field)-16
-            self.log_window.addstr(0,10, "y_bottom")
+            self.log_window.addstr(0,11, "y_bottom")
 
         x = 0
         y = 0
@@ -160,6 +151,7 @@ class Basic(State):
             else:
                 player_y = 16 + (self.player.get_y() - len(field))
 
+        # Finally draw player to a sane location
         if player_y is not None and player_x is not None:
             window.addch(player_y, player_x, '@', curses.color_pair(1))
 

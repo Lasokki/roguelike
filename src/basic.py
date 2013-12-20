@@ -5,6 +5,8 @@
 import curses
 import curses.wrapper
 
+from operator import attrgetter
+
 from state import State
 from dungeon import Dungeon
 from player import Player
@@ -109,28 +111,38 @@ class Basic(State):
         self.log_window.addstr(2, 30, str(start_y))
 
         # Cache visible npcs
-        
-        """
-        Pseudocode:
-        npcs = dungeon.get_npcs()
-        
-        for npc in npcs.itervalues():
-        if npc.get_x() && npc.get_y() are within start_x to start_x+something and same for y:
-           add npc to visible_npcs
+        npcs = self.dungeon.get_npcs()
+        visible_npcs = []
 
-        """
+        for npc in npcs.itervalues():
+            if npc.get_x() >= start_x and npc.get_x() <= start_x + 78 and npc.get_y() >= field_y and npc.get_y() <= field_y + 16:
+                visible_npcs.append(npc)
+        
+        # This should give the npcs in nice y-x -orders, since sorted() is stable
+        
+        sorted(visible_npcs, key=attrgetter('x'))
+        sorted(visible_npcs, key=attrgetter('y'))
 
         # Cache visible items
-        # Same here
+        # Do same stuff as with the monsters here
 
         while (y < 16):
             field_x = start_x
             while (x < 78):
-                tile = field[field_y][field_x]
-                if tile.terrain == "wall":
-                    window.addch(y, x, '#')
-                elif tile.terrain == "floor":
-                    window.addch(y, x, '.')
+                
+                if visible_npcs[0].get_y() == y:
+                    if visible_npcs[0].get_x() == x:
+                        window.addch(y, x, 'n')
+                        visible_npcs.pop()
+
+                else:
+
+                    tile = field[field_y][field_x]
+
+                    if tile.terrain == "wall":
+                        window.addch(y, x, '#')
+                    elif tile.terrain == "floor":
+                        window.addch(y, x, '.')
                 
                 x = x + 1
                 # if field_x + 1 < len(field[0]):

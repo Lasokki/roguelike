@@ -118,10 +118,10 @@ class Basic(State):
             if npc.get_x() >= start_x and npc.get_x() <= start_x + 78 and npc.get_y() >= field_y and npc.get_y() <= field_y + 16:
                 visible_npcs.append(npc)
         
-        # This should give the npcs in nice y-x -orders, since sorted() is stable
-        
-        sorted(visible_npcs, key=attrgetter('x'))
-        sorted(visible_npcs, key=attrgetter('y'))
+        # This should give the npcs in nice y-x -orders, since sorted() is stable.
+        # 12.1.2014: Why did I care about the y-x -order?
+        sorted(visible_npcs, key=attrgetter('coord'))
+        #sorted(visible_npcs, key=attrgetter('coord'))
 
         # Cache visible items
         # Do same stuff as with the monsters here
@@ -130,10 +130,9 @@ class Basic(State):
             field_x = start_x
             while (x < 78):
                 
-                if visible_npcs[0].get_y() == y:
-                    if visible_npcs[0].get_x() == x:
-                        window.addch(y, x, 'n')
-                        visible_npcs.pop()
+                if len(visible_npcs) > 0 and visible_npcs[0].get_y() == y and visible_npcs[0].get_x() == x:
+                    window.addch(y-start_y, x-start_x, 'n')
+                    visible_npcs.pop()
 
                 else:
 
